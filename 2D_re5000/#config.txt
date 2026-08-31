@@ -1,0 +1,54 @@
+=== version 1 ===
+timestep: 0.000125
+note:
+- first try
+
+=== version 2 ===
+timestep: 6.37E-5 s
+inner iteration: 5
+note:
+- use timestep from literature from Tamas
+
+=== version 3 ===
+timestep: 6.37E-5 s
+inner iteration: 15
+note:
+- change inner iteration
+- for next run, try turning on "incompressibility" settings!
+
+=== version 4 ===
+timestep: 6.37E-5 s
+inner iteration: 15
+gas: incompressible ideal gas
+>> RESULT: messed up all the decomposition! same as constant density
+
+=== version 5 ===
+timestep: 3.27E-6 s
+inner iteration: 5
+gas: ideal gas
+CFL: automatic
+note:
+- use Alex's timestep setting
+- cutback maxTime to 1.0 s
+
+=== version 6 ===
+timestep: 1.6096E-5 s
+inner iteration: 5
+CFL: auto
+note:
+- use Justin duPlessis timestep for the 3D re5000 cylinder
+
+=== version 7 ===
+timestep: 1.6096E-5 s
+inner iteration: 20
+CFL: constant
+note:
+- change inner iteration to 15
+- change CFL to constant (set at default 50)
+
+=== version 8 ===
+constant density model
+timestep: 1.6096E-5 s
+inner iteration: 20
+note:
+- change formulation for constant density
