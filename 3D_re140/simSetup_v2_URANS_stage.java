@@ -16,7 +16,7 @@ import star.energy.*;
 import star.meshing.*;
 import star.vis.*;
 
-public class simSetup_COUPLED_URANS_stage_v2_constantRho extends StarMacro {
+public class simSetup_v2_URANS_stage extends StarMacro {
 
     private Simulation sim;
     private Map<String, FieldFunction> ffMap = new HashMap<>();
