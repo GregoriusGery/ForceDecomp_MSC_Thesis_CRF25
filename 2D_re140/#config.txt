@@ -1,0 +1,126 @@
+=== COMMON SETTINGS ===
+--- physics:
+-- models:
+- gas:
+Molecular Weight: 28.966 kg/k.mol
+Specific Heat: 1006.43 J/kg.K
+Thermal Conductivity: 0.0242 W/m.K
+Dynamic Viscosity: Sutherland Law
+	Reference value: 1.716e-5 Pa.s
+	Sutherland constant: 110.56 K
+	Reference Temperature: 273.11 K
+Turbulent Prandtl Number: 0.85 (follow Fluent's default value, StarCCM's default is 0.9)
+-- initial condition:
+pressure: 0 Pa
+static temperature: 288.15 K
+velocity: [0.2068218 , 0] m/s
+turbulence intensity: 0.005 (in Fluent, this means 0.5%)
+turbulent length scale: 0.0009342 m
+turbulent velocity scale: 0.2068218 m/s -> 0.2069 m/s
+
+-- regions
+- free stream
+physics values:
+	flow direction: [ 1 , 0 ]
+	mach number: 6.08e-4
+	pressure: 0 Pa
+	temperature: 288.15 K
+	turbulence intensity: 0.005
+	turbulent length scale: 0.0009342 m
+
+-- solvers
+-segregated flow
+temporary storage retained: YES ( to enable ${StrainRate} parameter )
+
+- time-stepping & stopping criteria
+time step: 0.00014			[solvers >> implicit/explicit unsteady >> time-step]
+maximum inner iteration: 5	[stopping criteria]
+maximum flow time: 5s		[stopping criteria]
+maximum time-step: 35715	[stopping criteria]
+
+
+
+=== version 1 ===
+models:
+- all y+ wall treatment
+- gamma transition
+- ideal gas
+- implicit unsteady
+- K-W Turbulence
+- RANS
+- segregated flow
+- segregated fluid temperature
+- No initial condition set on Physics Model
+initial conditions:
+- static temperature: 288.15
+- turbulence intensity: 0.5
+
+=== version 2 ===
+- implicit unsteady
+- coupled energy
+- coupled flow
+- K-W turbulence
+- RANS
+- Turbulence Supression (suggestion by Tamas)
+- initial condition SET on phyisics model
+
+
+=== SIMPLE v1 ===
+-models:
+all y+ treatment
+ideal gas
+implicit unsteady
+k-w turbulence
+RANS
+segregated flow
+segregated fluid temperature
+turbulence suppresion
+--solvers:
+-implicit unsteady
+temporal discretization: 2nd order
+
+=== SIMPLE v2 ===
+- removed transition model
+- change max inner iteration to 200				-> change to 100
+- monitor continuity 1e-6 as stopping criteria	-> change to 1e-5
+
+=== SIMPLE v3 ===
+- scale mesh to fulfill D = 1 m criteria (scale 100x as the initial mesh is D = 0.01 m
+- change max iteration to 5
+- run for 10s of flow time
+- remove continuity as stopping criteria
+- re-calculate all reference value and initial condition settings based on Re = 140 and L = 1 m
+T = 300 K (room temp)
+rho air at 300 K = 1.1766 kg/m3
+atm pressure = 101325 Pa
+dynamic viscosity = sutherland's law
+	Reference value: 1.716e-5 Pa.s
+	Sutherland constant: 110.56 K
+	Reference Temperature: 273.15 K
+from this, we get U_in = 21.9674 m/s
+
+- Turbulence spec change to Intensity & Viscosity Ratio -> use default Star value of 0.01 and 10
+
+=== COUPLED v5 ===
+- all fixes applied
+- !!! CRITICAL !!!
+change to time step size
+based on strouhal number calculated from previous result
+st = 0.184
+
+f = ( st * U_inf ) / L_ref
+  = ( 0.184 * 0.2196 ) / 0.01
+  = 4.04064
+
+T = 1 / f
+  = 0.2475
+  
+1 shedding cycle is 0.2475 seconds
+to get a good resolution, take 50 time steps/cycle
+hence, dt = 0.2475 / 50 = 4.95e-3
+rounded to nice number of 5e-3 (way bigger than Justin's dt = 1.4e-4, should result in faster simulation without sacrificing accuracy of flow field)
+
+=== COUPLED v6 ===
+- include new enthalpy balance formulation
+- inlcude new Phi formulation for phi and Aphi
+- This is the default configuration used for reference!
