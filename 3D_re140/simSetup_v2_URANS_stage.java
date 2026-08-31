@@ -49,7 +49,7 @@ public class simSetup_v2_URANS_stage extends StarMacro {
         sim.println("Step 8: Generating Report & Field Mean Monitors...");
         createMonitors();
         
-        sim.println("Macro setup execution complete. The 3D DES simulation is ready to run.");
+        sim.println("URANS stage setup is complete. Run stage_setup_laminar.java to setup the multi-stage config.");
     }
 
     private void setupPhysics() {
@@ -126,12 +126,12 @@ public class simSetup_v2_URANS_stage extends StarMacro {
 		
         ScalarGlobalParameter dt_DES = (ScalarGlobalParameter) sim.get(GlobalParameterManager.class).createGlobalParameter(ScalarGlobalParameter.class, "Scalar");
         dt_DES.setPresentationName("timeStep_DES");
-        dt_DES.getQuantity().setValueAndUnits(1.2E-4, units_s); // IDDES timestep
+        dt_DES.getQuantity().setValueAndUnits(1.25E-4, units_s); // IDDES timestep
         dt_DES.setDimensions(Dimensions.Builder().time(1).build());
 		
         ScalarGlobalParameter max_time_DES = (ScalarGlobalParameter) sim.get(GlobalParameterManager.class).createGlobalParameter(ScalarGlobalParameter.class, "Scalar");
         max_time_DES.setPresentationName("maxTime_DES");
-        max_time_DES.getQuantity().setValueAndUnits(7.5, units_s); // IDDES max time
+        max_time_DES.getQuantity().setValueAndUnits(7.0, units_s); // IDDES max time
         max_time_DES.setDimensions(Dimensions.Builder().time(1).build());
 		
 		ScalarGlobalParameter dt_URANS = (ScalarGlobalParameter) sim.get(GlobalParameterManager.class).createGlobalParameter(ScalarGlobalParameter.class, "Scalar");
@@ -228,7 +228,6 @@ public class simSetup_v2_URANS_stage extends StarMacro {
         buildFunc("etau_vol", 0, Dimensions.Builder().mass(1).time(-3).build(), "($$${Tshear}[0,0] * $${PerturbationVelocity}[0] + $$${Tshear}[0,1] * $${PerturbationVelocity}[1] + $$${Tshear}[0,2] * $${PerturbationVelocity}[2])");
         buildFunc("etp_vol", 0, Dimensions.Builder().mass(1).time(-3).build(), "(0.5 * ${Density} * (pow($${PerturbationVelocity}[0], 2) + pow($${PerturbationVelocity}[1], 2) + pow($${PerturbationVelocity}[2], 2)) * $${Velocity}[0]) + (${StaticPressure} * $${PerturbationVelocity}[0]) - ($$${Tshear}[0,0] * $${PerturbationVelocity}[0] + $$${Tshear}[0,1] * $${PerturbationVelocity}[1] + $$${Tshear}[0,2] * $${PerturbationVelocity}[2])");
         
-		
         // --- Box Filters (Revised for Contiguous CVs) ---
         buildFunc("box_cv1", 0, Dimensions.Builder().build(), "($$Position[0] >= -0.1 && $$Position[0] <= 0.02 && $$Position[1] >= -0.1 && $$Position[1] <= 0.1 && $$Position[2] >= 0.0 && $$Position[2] <= 0.02) ? 1.0 : 0.0");
         buildFunc("box_cv2", 0, Dimensions.Builder().build(), "($$Position[0] > 0.02 && $$Position[0] <= 0.05 && $$Position[1] >= -0.1 && $$Position[1] <= 0.1 && $$Position[2] >= 0.0 && $$Position[2] <= 0.02) ? 1.0 : 0.0");
