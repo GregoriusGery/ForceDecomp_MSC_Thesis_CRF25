@@ -10,7 +10,9 @@ How to use these files:
       This only reorders the columns and rounds up the physical time in the first column (sometimes STAR-CCM results save the time with .99999, e.g., time at 5.0s saved as 4.99999999)
     - the .sim file of the latest simulation
 2. The formulations used for the simulations are included in the associated Java scripts of each case. Use this to replicate the same simulation.
-   The simulation is set up so that all the necessary parameters are stored in the automation tab, so you can modify some of the parameters easily by first running the Java script.
+   The simulation is set up so all necessary parameters are stored in the automation tab, so you can easily modify some parameters by first running the Java script.
 3. The included MATLAB scripts are used to do the post-processing. This includes loading the data, calculating the Strouhal number, and plotting all the decompositions.
 
-Currently, the result for the 3D vortex-shedding cylinder is not yet available. This will be uploaded as soon as it is finished, as well as the Windsor body case.
+Currently, the result for the 3D vortex-shedding cylinder is not yet available. We will upload it as soon as it is finished, along with the Windsor body case.
+
+Any question, feel free to contact me at ggerygavindra@gmail.com
